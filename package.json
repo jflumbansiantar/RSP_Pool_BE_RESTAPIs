@@ -1,0 +1,35 @@
+{
+  "name": "rsp_pool_be_restapis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jflumbansiantar/RSP_Pool_BE_RESTAPIs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jflumbansiantar/RSP_Pool_BE_RESTAPIs/issues"
+  },
+  "homepage": "https://github.com/jflumbansiantar/RSP_Pool_BE_RESTAPIs#readme",
+  "dependencies": {
+    "@sendgrid/mail": "^7.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2",
+    "multer-storage-cloudinary": "^4.0.0",
+    "mysql2": "^2.2.5",
+    "nodemon": "^2.0.6",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
+    "sequelize-paginate": "^1.1.6"
+  }
+}

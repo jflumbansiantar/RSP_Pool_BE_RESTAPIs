@@ -11,16 +11,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      bookings.belongsTo(models.rooms);
+      bookings.belongsTo(models.users);
     }
   };
   bookings.init({
-    user_id: DataTypes.INTEGER,
-    room_id: DataTypes.INTEGER,
-    total_person: DataTypes.INTEGER,
+    total_person: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: { msg: 'Input how much people will be in the room.' }
+      }
+    },
     booking_time: DataTypes.DATE,
-    noted: DataTypes.STRING,
-    check_in_time: DataTypes.DATE,
-    check_out_time: DataTypes.DATE,
+    noted: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Please input your noted message.' }
+      }
+    },
+    check_in_time: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: { msg: 'Input your check_in_time' }
+      }
+    },
+    check_out_time: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: { msg: 'Input your check_in_time' }
+      }
+    },
     deleted_at: DataTypes.DATE
   }, {
     sequelize,

@@ -1,4 +1,7 @@
 'use strict';
+
+const { encryptPwd } = require('../helpers/jwt')
+
 const {
   Model
 } = require('sequelize');
@@ -14,13 +17,35 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   users.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    photo: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Please enter a valid email' }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Please enter your password' }
+      }
+    },
+    photo: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Input your photo.' }
+      }
+    },
     deleted_at: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'users',
-  });
+  },
+    {
+      hooks: {
+        beforeCreate(users, options) {
+          users.password = encryptPwd(users.password)
+        },
+      },
+
+      sequelize,
+      modelName: 'users',
+    });
   return users;
 };

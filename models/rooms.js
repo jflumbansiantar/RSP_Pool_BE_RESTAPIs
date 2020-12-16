@@ -14,9 +14,24 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   rooms.init({
-    room_name: DataTypes.STRING,
-    room_capacity: DataTypes.STRING,
-    photo: DataTypes.STRING,
+    room_name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Enter the room name.' }
+      }
+    },
+    room_capacity: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Enter the room capacity.' }
+      }
+    },
+    photo: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: { msg: 'Input room picture.' }
+      }
+    },
     deleted_at: DataTypes.DATE
   }, {
     sequelize,
