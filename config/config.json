@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "",
+    "database": "rsp_pool",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "Idjoel3007",
+    "database": "rsp_pool_dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "Idjoel3007",
+    "database": "rsp_pool_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
