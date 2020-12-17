@@ -1,28 +1,18 @@
-const { Rooms } = require('../models')
-const { Op, where } = require('sequelize')
+const { rooms } = require('../models')
+const { Op, where } = require('sequelize');
+const Sequelize = require('sequelize');
 
 class RoomController {
-   static async geAlltRoom(req, res, next) {
-      const page = req.params.page;
+   static async getAllRoom(req, res, next) {
       try {
-         const result = await Rooms.findAll({
-            order: [
-               ['id', 'ASC']
-            ]
-         });
-         const options = { page, paginate: 10 };
-         const { docs, pages, total } = await result.paginate(options);
-         if (page > pages) {
-            res.status(400).json({
-               status: 'failed',
-               message: `Page ${page} is not found`
-            })
-         }
+         const result = await rooms.findAll({});
+
          res.status(200).json({
             status: 'Success',
             message: 'Here is all the rooms.',
             data: result
          })
+
       }
       catch (error) {
          next(error)
@@ -33,7 +23,7 @@ class RoomController {
       const { room_name, room_capacity } = req.body;
       const photo = req.file.path;
       try {
-         const result = await Rooms.findOne({
+         const result = await rooms.findOne({
             where: {
                room_name
             }
@@ -44,7 +34,7 @@ class RoomController {
                msg: 'Room already exists. Please create a new one.'
             })
          } else {
-            const newRoom = await Rooms.create({
+            const newRoom = await rooms.create({
                room_name,
                room_capacity,
                photo
@@ -66,13 +56,13 @@ class RoomController {
       const { room_name, room_capacity } = req.body;
       const photo = req.file.path;
       try {
-         const result = await Rooms.findOne({
+         const result = await rooms.findOne({
             where: {
                id
             }
          })
          if (result) {
-            const updateRoom = await Rooms.update({
+            const updateRoom = await rooms.update({
                room_name, room_capacity, photo
             }, {
                where: {
@@ -98,7 +88,7 @@ class RoomController {
    static async deleteRoom(req, res, next) {
       const id = req.params.id
       try {
-         const result = Rooms.destroy({
+         const result = rooms.destroy({
             where: {
                id
             }
@@ -116,7 +106,7 @@ class RoomController {
    static async search(req, res, next) {
       const { search } = req.body;
       try {
-         const found = await Rooms.findAll({
+         const found = await rooms.findAll({
             where: {
                title: {
                   [Op.like]: '%' + search + '%'
@@ -143,7 +133,7 @@ class RoomController {
    static async findById(req, res, next) {
       const id = req.params.id;
       try {
-         const result = await Rooms.findOne({
+         const result = await rooms.findOne({
             where: {
                id
             }
@@ -167,8 +157,6 @@ class RoomController {
       }
    }
 }
-
-
 
 module.exports = {
    RoomController

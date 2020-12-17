@@ -1,6 +1,6 @@
 'use strict';
 
-const { encryptPwd } = require('../helpers/jwt')
+const { tokenGenerator } = require('../helpers/jwt')
 
 const {
   Model
@@ -35,12 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: 'Input your photo.' }
       }
     },
-    deleted_at: DataTypes.DATE
   },
     {
       hooks: {
         beforeCreate(users, options) {
-          users.password = encryptPwd(users.password)
+          users.password = tokenGenerator(users.password)
         },
       },
 

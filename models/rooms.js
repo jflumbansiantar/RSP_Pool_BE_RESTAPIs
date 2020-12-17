@@ -32,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: 'Input room picture.' }
       }
     },
-    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'rooms',

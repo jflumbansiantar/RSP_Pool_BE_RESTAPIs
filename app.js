@@ -1,18 +1,17 @@
 const express = require('express');
-const fs = require('fs');
+const app = express();
 require('dotenv').config();
+
+const PORT = process.env.PORT || 5000;
+const errHandler = require('./middlewares/errorHandling')
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
-const errHandler = require('./middlewares/errorHandling')
-const auth = require('./middlewares/auth')
-const app = express();
-const PORT = process.env.PORT || 5000;
 const router = require('./routes')
 
 //Middlewares
 
-app.use(bodyParser.urlencoded({ extended: false}));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false}));
+app.use(express.json());
 
 //Routes
 app.use(router);
@@ -20,5 +19,3 @@ app.use(router);
 app.listen(PORT, () => {
     console.log(`Server is running at port : ${PORT}`);
 })
-
-app.use(auth);

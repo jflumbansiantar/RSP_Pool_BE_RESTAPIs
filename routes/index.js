@@ -6,11 +6,12 @@ const bookingsRoutes = require('./booking');
 
 router.get('/', (req,res)=>{
     res.status(200).json({
-        message : "Hi, good people! Welcome to Home Page of Movie Review Apps! Have a good day!"
+        status: true,
+        message : "Hi, good people! Welcome to Home Page of Our Reservation Apps! Have a good day!"
     })
 });
-router.use('/room', moviesRoutes)
-router.use('/users', usersRoutes)
+router.use('/room', roomsRoutes)
+router.use('/user', usersRoutes)
 router.use('/booking', bookingsRoutes)
 
 module.exports = router;
