@@ -1,16 +1,17 @@
 const { rooms, users, bookings } = require('../models')
 const sequelize = require('sequelize')
+const email = require('../middlewares/email')
 
 class BookingController {
    //user only
    static async addBooking(req, res, next) {
       const { total_person, booking_time, noted, check_in_time, check_out_time } = req.body;
-      const room_id = req.params.id
-      const user_id = req.userData.id
-      console.log(room_id, user_id)
+      const roomId = req.params.roomId
+      const userId = req.userData.id
+      console.log(roomId, userId)
       try {
          //user and room validation
-         const foundUser = await bookings.findOne({ where: { user_id: user_id } })
+         const foundUser = await bookings.findOne({ where: { user_id: userId } })
          if (foundUser) {
             res.status(400).json({
                status: 'failed',
@@ -22,15 +23,15 @@ class BookingController {
          } else {
 
             const newBooking = await bookings.create({
-               user_id,
-               room_id,
+               userId,
+               roomId,
                total_person,
                booking_time: new Date(),
                noted,
                check_in_time,
                check_out_time
             });
-            if (newBooking.total_person < rooms.room_capacity) {
+            if (newBooking.total_person > rooms.room_capacity) {
                res.status(400).json({
                   status: 'failed',
                   msg: "Please choose bigger room.",
@@ -39,12 +40,14 @@ class BookingController {
                      room_capacity
                   }
                })
+            } else {
+               email(newBooking);
+               res.status(200).json({
+                  status: 'success',
+                  msg: "Thank you for your Booking!",
+                  data: newBooking
+               })
             }
-            res.status(200).json({
-               status: 'success',
-               msg: "Thank you for your Booking!",
-               data: newBooking
-            })
          }
 
       } catch (error) {
@@ -72,17 +75,17 @@ class BookingController {
       }
    }
    static async getBookingbyRoom(req, res, next) {
-      const room_id = req.params.id;
+      const roomId = req.params.roomId;
       try {
          const findRoom = await rooms.findOne({
             where: {
-               id: room_id
+               id: roomId
             }
          })
          if (findRoom) {
             const result = await bookings.findAll({
                where: {
-                  id: room_id
+                  id: roomId
                },
                order: [
                   ['id', 'ASC']
@@ -107,17 +110,17 @@ class BookingController {
       }
    }
    static async getBookingbyUser(req, res, next) {
-      const user_id = req.params.id
+      const userId = req.params.id
       try {
          const findUser = await users.findOne({
             where: {
-               id: user_id
+               id: userId
             }
          })
          if (findUser) {
             const result = await bookings.findAll({
                where: {
-                  id: user_id
+                  id: userId
                },
                order: [
                   ['id', 'ASC']
@@ -161,7 +164,9 @@ class BookingController {
                   updatedAt: new Date(),
                }
             })
-            //send email
+
+            email(booking);
+            
             res.status(200).json({
                status: 'success',
                msg: "Your booking has been approved.",
@@ -192,7 +197,9 @@ class BookingController {
                   updatedAt: new Date(),
                }
             })
-            //send email
+            
+            email(booking);
+
             res.status(200).json({
                status: 'success',
                msg: "Your booking has been rejected.",

@@ -8,17 +8,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER
       },
-      room_id: {
-        type: Sequelize.INTEGER
-      },
-      total_person: {
+      roomId: {
         type: Sequelize.INTEGER
       },
       booking_time: {
         type: Sequelize.DATE
+      },
+      total_person: {
+        type: Sequelize.INTEGER
       },
       noted: {
         type: Sequelize.STRING
