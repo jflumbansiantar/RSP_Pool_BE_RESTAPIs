@@ -1,0 +1,37 @@
+[
+    {
+        "room_name": "Small",
+        "room_capacity": "10",
+        "photo": "https://res.cloudinary.com/peerspace-inc/image/upload/gqlrz6vmilottbqjcn7y.jpg"
+    },
+    {
+        "room_name": "Reguler",
+        "room_capacity": "20",
+        "photo": "https://www.bird-office.com/media/cache/thumbPlaceImage/prod/place/large-conference-and-meeting-room-up-to-20-people-d54.jpeg"
+    },
+    {
+        "room_name": "Medium",
+        "room_capacity": "50",
+        "photo": "https://logomo.fi/wp-content/uploads/2018/01/goto_31_3.jpg"
+    },
+    {
+        "room_name": "Large",
+        "room_capacity": "100",
+        "photo": "https://kashiwanoha-cc.jp/img/room/ph_kv_room_12.jpg"
+    },
+    {
+        "room_name": "Extra Large",
+        "room_capacity": "200",
+        "photo": "https://www.bird-office.com/media/cache/thumbPlaceImage/prod/place/salle-de-conferences-pour-environ-200-personnes-en-fonction-de-la-mise-en-place-200.jpeg"
+    },
+    {
+        "room_name": "Hall",
+        "room_capacity": "500",
+        "photo": "https://www.cccb.org/rcs_gene/02_hall.jpg"
+    },
+    {
+        "room_name": "Auditorium",
+        "room_capacity": "1000",
+        "photo": "https://www.wbdg.org/images/auditorium_03.jpg"
+    }
+]
