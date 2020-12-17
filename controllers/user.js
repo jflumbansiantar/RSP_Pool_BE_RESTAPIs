@@ -39,7 +39,9 @@ class usersController {
       console.log(req.body);
       try {
          const user = await users.findOne({
-            where: { email }
+            where: {
+               email
+            }
          });
          if (user) {
             if (decryptPwd(password, user.password)) {

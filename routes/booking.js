@@ -5,11 +5,11 @@ const { BookingController } = require('../controllers/booking');
 const { Authentication, IsAdmin, } = require('../middlewares/auth');
 
 
-router.post('/add/:roomId', Authentication, BookingController.addBooking)
-router.get('/', Authentication, IsAdmin, BookingController.getAllBooking)
-router.get('/:roomId', Authentication, IsAdmin, BookingController.getBookingbyRoom)
-router.get('/:userId', Authentication, IsAdmin, BookingController.getBookingbyUser)
-router.put('/approved/:id', Authentication, IsAdmin, BookingController.bookingApproved)
-router.put('/rejected/:id', Authentication, IsAdmin, BookingController.bookingRejected)
+router.post('/add/:id', Authentication, BookingController.addBooking)
+router.get('/', IsAdmin, BookingController.getAllBooking)
+router.get('/:roomId', IsAdmin, BookingController.getBookingbyRoom)
+router.get('/:userId', IsAdmin, BookingController.getBookingbyUser)
+router.put('/approved/:id', IsAdmin, BookingController.bookingApproved)
+router.put('/rejected/:id', IsAdmin, BookingController.bookingRejected)
 
 module.exports = router;

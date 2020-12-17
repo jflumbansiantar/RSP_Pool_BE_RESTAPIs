@@ -41,6 +41,8 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: 'Input your check_in_time' }
       }
     },
+    user_id: DataTypes.INTEGER,
+    room_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'bookings',

@@ -1,6 +1,6 @@
 'use strict';
 
-const { tokenGenerator } = require('../helpers/jwt')
+const { encryptPwd } = require('../helpers/bcrypt')
 
 const {
   Model
@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // users.hasMany(models.bookings)
     }
   };
   users.init({
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       hooks: {
         beforeCreate(users, options) {
-          users.password = tokenGenerator(users.password)
+          users.password = encryptPwd(users.password)
         },
       },
 

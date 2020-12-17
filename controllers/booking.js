@@ -5,44 +5,47 @@ class BookingController {
    //user only
    static async addBooking(req, res, next) {
       const { total_person, booking_time, noted, check_in_time, check_out_time } = req.body;
-      const roomId = req.params.id
-      const userId = req.usersData.id
+      const room_id = req.params.id
+      const user_id = req.userData.id
+      console.log(room_id, user_id)
       try {
          //user and room validation
-         const foundUser = await bookings.findOne({ where: { userId: userId } })
-         const foundRoom = await bookings.findOne({ where: { roomId: roomId } })
-         if (foundUser && foundRoom) {
+         const foundUser = await bookings.findOne({ where: { user_id: user_id } })
+         if (foundUser) {
             res.status(400).json({
                status: 'failed',
                msg: "You already had book this room.",
                data: {
                   user: foundUser,
-                  room: foundRoom
                }
             })
-         }
-         const newBooking = await bookings.create({
-            total_person,
-            booking_time: new Date(),
-            noted,
-            check_in_time,
-            check_out_time
-         });
-         if (newBooking.total_person < rooms.room_capacity) {
-            res.status(400).json({
-               status: 'failed',
-               msg: "Please choose bigger room.",
-               data: {
-                  total_person,
-                  room_capacity
-               }
+         } else {
+
+            const newBooking = await bookings.create({
+               user_id,
+               room_id,
+               total_person,
+               booking_time: new Date(),
+               noted,
+               check_in_time,
+               check_out_time
+            });
+            if (newBooking.total_person < rooms.room_capacity) {
+               res.status(400).json({
+                  status: 'failed',
+                  msg: "Please choose bigger room.",
+                  data: {
+                     total_person,
+                     room_capacity
+                  }
+               })
+            }
+            res.status(200).json({
+               status: 'success',
+               msg: "Thank you for your Booking!",
+               data: newBooking
             })
          }
-         res.status(200).json({
-            status: 'success',
-            msg: "Thank you for your Booking!",
-            data: newBooking
-         })
 
       } catch (error) {
          next(error)
@@ -69,17 +72,17 @@ class BookingController {
       }
    }
    static async getBookingbyRoom(req, res, next) {
-      const roomId = req.params.roomId
+      const room_id = req.params.id;
       try {
          const findRoom = await rooms.findOne({
             where: {
-               id: roomId
+               id: room_id
             }
          })
          if (findRoom) {
             const result = await bookings.findAll({
                where: {
-                  roomId: roomId
+                  id: room_id
                },
                order: [
                   ['id', 'ASC']
@@ -104,17 +107,17 @@ class BookingController {
       }
    }
    static async getBookingbyUser(req, res, next) {
-      const userId = req.params.userId
+      const user_id = req.params.id
       try {
          const findUser = await users.findOne({
             where: {
-               id: userId
+               id: user_id
             }
          })
          if (findUser) {
             const result = await bookings.findAll({
                where: {
-                  userId: userId
+                  id: user_id
                },
                order: [
                   ['id', 'ASC']
