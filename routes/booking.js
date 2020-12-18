@@ -9,7 +9,7 @@ router.post('/add/:id', Authentication, BookingController.addBooking)
 router.get('/', IsAdmin, BookingController.getAllBooking)
 router.get('/:roomId', IsAdmin, BookingController.getBookingbyRoom)
 router.get('/:userId', IsAdmin, BookingController.getBookingbyUser)
-router.put('/approved/:id', IsAdmin, BookingController.bookingApproved)
+router.post('/approved/:id', IsAdmin, BookingController.bookingApproved)
 router.put('/rejected/:id', IsAdmin, BookingController.bookingRejected)
 
 module.exports = router;

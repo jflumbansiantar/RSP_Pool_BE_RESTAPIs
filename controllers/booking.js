@@ -6,18 +6,30 @@ class BookingController {
    //user only
    static async addBooking(req, res, next) {
       const { total_person, booking_time, noted, check_in_time, check_out_time } = req.body;
-      const roomId = req.params.roomId
-      const userId = req.userData.id
-      console.log(roomId, userId)
+      const roomId = req.params;
+      const userId = req.userData
+      // console.log(roomId, userId), blum bisa manggil room
+
       try {
          //user and room validation
-         const foundUser = await bookings.findOne({ where: { user_id: userId } })
-         if (foundUser) {
+         const foundUser = await bookings.findOne({
+            where: {
+               userId: userId,
+            }
+         })
+         const foundRoom = await bookings.findOne({
+            where: {
+               roomId: roomId,
+            }
+         })
+         // console.log(foundUser, foundRoom)
+         if (foundUser && foundRoom) {
             res.status(400).json({
                status: 'failed',
                msg: "You already had book this room.",
                data: {
                   user: foundUser,
+                  room: foundRoom
                }
             })
          } else {
@@ -57,6 +69,7 @@ class BookingController {
 
    //adminOnly
    static async getAllBooking(req, res, next) {
+
       try {
          const result = await bookings.findAll({
             order: [['id', 'ASC']],
@@ -75,7 +88,8 @@ class BookingController {
       }
    }
    static async getBookingbyRoom(req, res, next) {
-      const roomId = req.params.roomId;
+      const roomId = req.params.id;
+
       try {
          const findRoom = await rooms.findOne({
             where: {
@@ -110,7 +124,7 @@ class BookingController {
       }
    }
    static async getBookingbyUser(req, res, next) {
-      const userId = req.params.id
+      const userId = req.params.user_id
       try {
          const findUser = await users.findOne({
             where: {
@@ -120,7 +134,7 @@ class BookingController {
          if (findUser) {
             const result = await bookings.findAll({
                where: {
-                  id: userId
+                  userId
                },
                order: [
                   ['id', 'ASC']
@@ -146,11 +160,11 @@ class BookingController {
    }
 
    static async bookingApproved(req, res, next) {
-      const bookingId = req.params.id;
+      const id = req.params.id;
       try {
          const found = await bookings.findOne({
             where: {
-               id: bookingId
+               id
             }
          })
          if (!found) {
@@ -166,7 +180,7 @@ class BookingController {
             })
 
             email(booking);
-            
+
             res.status(200).json({
                status: 'success',
                msg: "Your booking has been approved.",
@@ -179,7 +193,7 @@ class BookingController {
    }
 
    static async bookingRejected(req, res, next) {
-      const bookingId = req.params.id;
+      const bookingId = req.params;
       try {
          const found = await bookings.findOne({
             where: {
@@ -197,7 +211,7 @@ class BookingController {
                   updatedAt: new Date(),
                }
             })
-            
+
             email(booking);
 
             res.status(200).json({

@@ -1,6 +1,5 @@
 const { rooms } = require('../models')
 const { Op, where } = require('sequelize');
-const Sequelize = require('sequelize');
 
 class RoomController {
    static async getAllRoom(req, res, next) {
@@ -53,7 +52,7 @@ class RoomController {
 
    static async updateRoom(req, res, next) {
       const id = req.params.id;
-      const { room_name, room_capacity } = req.body;
+      const { room_name, room_capacity} = req.body;
       const photo = req.file.path;
       try {
          const result = await rooms.findOne({
@@ -64,40 +63,82 @@ class RoomController {
          if (result) {
             const updateRoom = await rooms.update({
                room_name, room_capacity, photo
-            }, {
+            }, 
+            {
                where: {
                   id
                }
             });
-            res.status(201).json({
+            res.status(200).json({
                status: 'success',
-               message: 'Updated succesfully!',
+               msg: 'Room found',
                data: updateRoom
             })
-         } else {
+         }
+         else {
             res.status(404).json({
                status: 'failed',
-               message: 'Cannot find the Room.'
+               msg: "Room is not available!"
             })
          }
-      } catch (error) {
+      }
+      catch (error) {
          next(error)
       }
    }
+   // const id = req.userData.id;
+   // console.log(id, '-ini id')
+   // const { room_name, room_capacity } = req.body;
+   // const photo = req.file.path;
+   // try {
+   //    const result = await rooms.findOne({
+   //       where: {
+   //          id
+   //       }
+   //    })
+   //    if (result) {
+   //       const updateRoom = await rooms.update({
+   //          room_name, room_capacity, photo
+   //       }, {
+   //          where: {
+   //             id
+   //          }
+   //       });
+   //       res.status(201).json({
+   //          status: 'success',
+   //          message: 'Updated succesfully!',
+   //          data: updateRoom
+   //       })
+   //    } else {
+   //       res.status(404).json({
+   //          status: 'failed',
+   //          message: 'Cannot find the Room.'
+   //       })
+   //    }
+   // } catch (error) {
+   //    next(error)
+   // }
+   // }
 
    static async deleteRoom(req, res, next) {
-      const id = req.params.id
+      const id = req.params.id;
       try {
          const result = rooms.destroy({
             where: {
                id
             }
          })
-         res.status(200).json({
-            status: 'success',
-            msg: 'Room deleted',
-            data: result
-         })
+         if (!result) {
+            res.status(400).json({
+               status: false,
+               msg: 'Room not found or already deleted.'
+            })   
+         } else {
+            res.status(200).json({
+               status: 'success',
+               msg: 'Room deleted'
+            })
+         }
       }
       catch (error) {
          next(error)
@@ -108,8 +149,8 @@ class RoomController {
       try {
          const found = await rooms.findAll({
             where: {
-               title: {
-                  [Op.like]: '%' + search + '%'
+               room_name: {
+                  [Op.like]: '%' + search 
                }
             }
          });
