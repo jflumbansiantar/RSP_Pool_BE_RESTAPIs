@@ -9,14 +9,14 @@
   "test": {
     "username": "root",
     "password": "",
-    "database": "rsp_pool_restapi_dev",
+    "database": "rsp_pool_restapi",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "",
-    "database": "rsp_pool_test",
+    "database": "rsp_pool_restapi",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
