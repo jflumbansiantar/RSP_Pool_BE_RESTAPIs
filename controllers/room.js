@@ -3,9 +3,23 @@ const { Op, where } = require('sequelize');
 
 class RoomController {
    static async getAllRoom(req, res, next) {
+      const page = req.params.page;
       try {
-         const result = await rooms.findAll({});
+         const result = await rooms.findAll({
+            oerder: ['id', 'ASC']
+         });
 
+         const pg = {
+             page,
+             paginate: 5,
+         }
+         const { docs, pages, total } = await rooms.paginate(pg);
+         if (page > pages) {
+            res.status(400).json({
+               status: 'failed',
+               message: `Page ${page} is not available.`
+            })
+         }
          res.status(200).json({
             status: 'Success',
             message: 'Here is all the rooms.',
@@ -86,39 +100,7 @@ class RoomController {
          next(error)
       }
    }
-   // const id = req.userData.id;
-   // console.log(id, '-ini id')
-   // const { room_name, room_capacity } = req.body;
-   // const photo = req.file.path;
-   // try {
-   //    const result = await rooms.findOne({
-   //       where: {
-   //          id
-   //       }
-   //    })
-   //    if (result) {
-   //       const updateRoom = await rooms.update({
-   //          room_name, room_capacity, photo
-   //       }, {
-   //          where: {
-   //             id
-   //          }
-   //       });
-   //       res.status(201).json({
-   //          status: 'success',
-   //          message: 'Updated succesfully!',
-   //          data: updateRoom
-   //       })
-   //    } else {
-   //       res.status(404).json({
-   //          status: 'failed',
-   //          message: 'Cannot find the Room.'
-   //       })
-   //    }
-   // } catch (error) {
-   //    next(error)
-   // }
-   // }
+   
 
    static async deleteRoom(req, res, next) {
       const id = req.params.id;
