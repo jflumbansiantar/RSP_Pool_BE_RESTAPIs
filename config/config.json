@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "",
-    "database": "rsp_pool_restapi",
-    "host": "127.0.0.1",
+    "username": "bcd79496132a0d",
+    "password": "faafcd33",
+    "database": "heroku_f5c74c776fce1d1",
+    "host": "us-cdbr-east-02.cleardb.com",
     "dialect": "mysql"
   }
 }

@@ -6,7 +6,7 @@ module.exports = async (booking) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: process.env.EMAIL_USER,
+            user: process.env.ADMIN_EMAIL,
             pass: process.env.EMAIL_PASS
         }
     })
