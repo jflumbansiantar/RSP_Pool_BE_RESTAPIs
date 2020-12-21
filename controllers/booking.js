@@ -6,19 +6,19 @@ class BookingController {
    //user only
    static async addBooking(req, res, next) {
       const { total_person, booking_time, noted, check_in_time, check_out_time } = req.body;
-      const roomId = req.params;
-      const userId = req.userData
-      // const rooms = req.room_id;
+      const roomId = Number(req.params.id);
+      const userId = req.userData.id
       console.log(roomId, userId)
 
       try {
          //user and room validation
          const foundUser = await bookings.findOne({ where: { userId: userId } })
-         const foundRoom = await rooms.findOne({ where: { roomId } })
+         const foundRoom = await bookings.findOne({ where: { roomId: roomId } })
          console.log(foundUser, '--user');
          console.log(foundRoom, '--room');
+
          
-         if (foundUser) {
+         if (foundUser && foundRoom) {
             res.status(400).json({
                status: 'failed',
                msg: "You already had book this room.",
@@ -28,26 +28,26 @@ class BookingController {
             })
          } else {
                const newBooking = new bookings({
-                  userId: userId,
-                  roomId: roomId,
-                  total_person: total_person,
+                  userId,
+                  roomId,
+                  total_person,
                   booking_time: new Date(),
                   noted: noted,
                   check_in_time,
                   check_out_time
                });
 
-            if (total_person > foundRoom.room_capacity) {
-               res.status(400).json({
-                  status: 'failed',
-                  msg: "Please choose a bigger room!",
-                  data: {
-                     total_person: total_person,
-                     room_capacity: foundRoom.room_capacity
-                  }
-               })
-            } else {
-               const book = await newBookings.save();
+            // if (total_person > Number(rooms.room_capacity)) {
+            //    res.status(400).json({
+            //       status: 'failed',
+            //       msg: "Please choose a bigger room!",
+            //       data: {
+            //          total_person: total_person,
+            //          room_capacity: rooms.room_capacity
+            //       }
+            //    })
+            // } else {
+               const book = await newBooking.save();
                email(newBooking);
 
                res.status(200).json({
@@ -55,7 +55,7 @@ class BookingController {
                   msg: "Thank you for your Booking!",
                   data: book
                })
-            }
+            // }
          }
 
 
